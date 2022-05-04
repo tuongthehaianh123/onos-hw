@@ -3,13 +3,13 @@ export GO111MODULE=on
 
 .PHONY: build
 
-ONOS_KPIMON_VERSION := v0.3.2
+ONOS_HW_VERSION := v0.3.2
 ONOS_PROTOC_VERSION := v0.6.6
 BUF_VERSION := 0.27.1
 
 build: # @HELP build the Go binaries and run all validations (default)
 build:
-	GOPRIVATE="github.com/onosproject/*" go build -o build/_output/onos-kpimon ./cmd/onos-hw
+	GOPRIVATE="github.com/tuongthehaianh123/*" go build -o build/_output/onos-hw ./cmd/onos-hw
 
 build-tools:=$(shell if [ ! -d "./build/build-tools" ]; then cd build && git clone https://github.com/onosproject/build-tools.git; fi)
 include ./build/build-tools/make/onf-common.mk
@@ -36,36 +36,36 @@ protos:
 		onosproject/protoc-go:${ONOS_PROTOC_VERSION}
 
 helmit-kpm: integration-test-namespace # @HELP run MHO tests locally
-	helmit test -n test ./cmd/onos-kpimon-test --timeout 30m --no-teardown \
+	helmit test -n test ./cmd/onos-hw-test --timeout 30m --no-teardown \
 			--secret sd-ran-username=${repo_user} --secret sd-ran-password=${repo_password} \
 			--suite kpm
 
 helmit-ha: integration-test-namespace # @HELP run MHO HA tests locally
-	helmit test -n test ./cmd/onos-kpimon-test --timeout 30m --no-teardown \
+	helmit test -n test ./cmd/onos-hw-test --timeout 30m --no-teardown \
 			--secret sd-ran-username=${repo_user} --secret sd-ran-password=${repo_password} \
 			--suite ha
 
 integration-tests: helmit-kpm helmit-ha # @HELP run all MHO integration tests locally
 
-onos-kpimon-docker: # @HELP build onos-kpimon Docker image
-onos-kpimon-docker:
+onos-hw-docker: # @HELP build onos-hw Docker image
+onos-hw-docker:
 	@go mod vendor
-	docker build . -f build/onos-kpimon/Dockerfile \
-		-t onosproject/onos-kpimon:${ONOS_KPIMON_VERSION}
-	@rm -rf vendor
+	docker build . -f build/onos-hw/Dockerfile \
+		-t onosproject/onos-hw:${ONOS_HW_VERSION}
+	@rm -rfHWr
 
 images: # @HELP build all Docker images
-images: build onos-kpimon-docker
+images: build onos-hw-docker
 
 kind: # @HELP build Docker images and add them to the currently configured kind cluster
 kind: images
 	@if [ "`kind get clusters`" = '' ]; then echo "no kind cluster found" && exit 1; fi
-	kind load docker-image onosproject/onos-kpimon:${ONOS_KPIMON_VERSION}
+	kind load docker-image onosproject/onos-hw:${ONOS_HW_VERSION}
 
-all: build images
+all: builHWes
 
 publish: # @HELP publish version on github and dockerhub
-	./build/build-tools/publish-version ${VERSION} onosproject/onos-kpimon
+	./build/build-tools/publish-version ${VERSION} onosproject/onos-hw
 
 jenkins-publish: jenkins-tools # @HELP Jenkins calls this to publish artifacts
 	./build/bin/push-images
@@ -75,6 +75,6 @@ bumponosdeps: # @HELP update "onosproject" go dependencies and push patch to git
 	./build/build-tools/bump-onos-deps ${VERSION}
 
 clean:: # @HELP remove all the build artifacts
-	rm -rf ./build/_output ./vendor ./cmd/onos-kpimon/onos-kpimon ./cmd/onos/onos
+	rm -rf ./build/_output ./vendor ./cmd/onos-hw/onos-hw ./cmd/onos/onos
 	go clean -testcache github.com/tuongthehaianh123/onos-hw/...
 
