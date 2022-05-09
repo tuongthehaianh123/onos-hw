@@ -16,7 +16,7 @@ import (
 )
 
 // HWServiceAddress defines the address and port for connections to the HW service
-const HWServiceAddress = "onos-kpimon:5150"
+const HWServiceAddress = "onos-hw:5150"
 
 // ConnectHWServiceHost connects to the onos HW service
 func ConnectHWServiceHost() (*grpc.ClientConn, error) {

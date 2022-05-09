@@ -45,7 +45,7 @@ func NewManager(config Config) *Manager {
 		subscription.WithServiceModel(subscription.ServiceModelName(config.SMName),
 			subscription.ServiceModelVersion(config.SMVersion)),
 		subscription.WithAppConfig(appCfg),
-		subscription.WithAppID("onos-kpimon"),
+		subscription.WithAppID("onos-hw"),
 		subscription.WithBroker(subscriptionBroker),
 		subscription.WithActionStore(actionsStore),
 		subscription.WithMeasurementStore(measStore))
