@@ -3,4 +3,4 @@ set -e
 
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
 make images
-docker push onosproject/onos-kpimon:latest
+docker push onosproject/onos-hw:v0.3.2
