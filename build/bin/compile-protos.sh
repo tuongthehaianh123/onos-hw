@@ -1,6 +1,6 @@
 #!/bin/sh
 
-proto_imports=".:${GOPATH}/src/github.com/gogo/protobuf/protobuf:${GOPATH}/src/github.com/gogo/protobuf:${GOPATH}/src/github.com/envoyproxy/protoc-gen-validate:${GOPATH}/src":"${GOPATH}/src/github.com/onosproject/onos-kpimon/api"
+proto_imports=".:${GOPATH}/src/github.com/gogo/protobuf/protobuf:${GOPATH}/src/github.com/gogo/protobuf:${GOPATH}/src/github.com/envoyproxy/protoc-gen-validate:${GOPATH}/src":"${GOPATH}/src/github.com/onosproject/onos-hw/api"
 
 # samples below
 # admin.proto cannot be generated with fast marshaler/unmarshaler because it uses gnmi.ModelData
@@ -19,5 +19,5 @@ proto_imports=".:${GOPATH}/src/github.com/gogo/protobuf/protobuf:${GOPATH}/src/g
 #protoc -I=$proto_imports --validate_out=lang=go:. --proto_path=api --gogo_out=Mgoogle/protobuf/timestamp.proto=github.com/gogo/protobuf/types,Mgoogle/protobuf/duration.proto=github.com/gogo/protobuf/types,import_path=github.com/onosproject/onos-e2t/api:. api/e2ap/v1beta1/e2ap_pdu_contents.proto
 #protoc -I=$proto_imports --validate_out=lang=go:. --proto_path=api --gogo_out=Mgoogle/protobuf/timestamp.proto=github.com/gogo/protobuf/types,Mgoogle/protobuf/duration.proto=github.com/gogo/protobuf/types,import_path=github.com/onosproject/onos-e2t/api:. api/e2ap/v1beta1/e2ap_pdu_descriptions.proto
 
-cp -r github.com/onosproject/onos-kpimon/* .
+cp -r github.com/onosproject/onos-hw/* .
 rm -rf github.com

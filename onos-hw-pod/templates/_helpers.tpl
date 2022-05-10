@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "onos-kpimon.name" -}}
+{{- define "onos-hw.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "onos-kpimon.fullname" -}}
+{{- define "onos-hw.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -27,16 +27,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "onos-kpimon.chart" -}}
+{{- define "onos-hw.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Common labels
 */}}
-{{- define "onos-kpimon.labels" -}}
-helm.sh/chart: {{ include "onos-kpimon.chart" . }}
-{{ include "onos-kpimon.selectorLabels" . }}
+{{- define "onos-hw.labels" -}}
+helm.sh/chart: {{ include "onos-hw.chart" . }}
+{{ include "onos-hw.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -46,15 +46,15 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "onos-kpimon.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "onos-kpimon.name" . }}
+{{- define "onos-hw.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "onos-hw.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
-onos-kpimon image name
+onos-hw image name
 */}}
-{{- define "onos-kpimon.imagename" -}}
+{{- define "onos-hw.imagename" -}}
 {{- if .Values.global.image.registry -}}
 {{- printf "%s/" .Values.global.image.registry -}}
 {{- else if .Values.image.registry -}}

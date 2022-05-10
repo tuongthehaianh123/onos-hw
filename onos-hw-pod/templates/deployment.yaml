@@ -5,28 +5,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "onos-kpimon.fullname" . }}
+  name: {{ include "onos-hw.fullname" . }}
   labels:
-  {{- include "onos-kpimon.labels" . | nindent 4 }}
+  {{- include "onos-hw.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      name: {{ template "onos-kpimon.fullname" . }}
+      name: {{ template "onos-hw.fullname" . }}
       app: onos
-      type: kpimon
-      resource: {{ template "onos-kpimon.fullname" . }}
-  {{- include "onos-kpimon.selectorLabels" . | nindent 6 }}
+      type: hw
+      resource: {{ template "onos-hw.fullname" . }}
+  {{- include "onos-hw.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
         proxy.onosproject.org/inject: "true"
       labels:
-        name: {{ template "onos-kpimon.fullname" . }}
+        name: {{ template "onos-hw.fullname" . }}
         app: onos
-        type: kpimon
-        resource: {{ template "onos-kpimon.fullname" . }}
-    {{- include "onos-kpimon.selectorLabels" . | nindent 8 }}
+        type: hw
+        resource: {{ template "onos-hw.fullname" . }}
+    {{- include "onos-hw.selectorLabels" . | nindent 8 }}
     spec:
       securityContext:
       {{- toYaml .Values.podSecurityContext | nindent 8 }}
@@ -36,14 +36,14 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ include "onos-kpimon.imagename" . | quote }}
+          image: {{ include "onos-hw.imagename" . | quote }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "-caPath=/etc/onos/certs/tls.cacrt"
             - "-keyPath=/etc/onos/certs/tls.key"
             - "-certPath=/etc/onos/certs/tls.crt"
-            - "-e2tEndpoint={{ .Values.config.kpimon.e2tEndpoint }}"
-            - "-smVersion={{ .Values.config.kpimon.kpmVersion }}"
+            - "-e2tEndpoint={{ .Values.config.hw.e2tEndpoint }}"
+            - "-smVersion={{ .Values.config.hw.kpmVersion }}"
           ports:
             - name: grpc
               containerPort: {{ .Values.service.grpc.port }}
@@ -95,7 +95,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: SERVICE_NAME
-              value: {{ template "onos-kpimon.fullname" . }}
+              value: {{ template "onos-hw.fullname" . }}
             - name: NODE_NAME
               valueFrom:
                 fieldRef:
@@ -105,10 +105,10 @@ spec:
       volumes:
         - name: secret
           secret:
-            secretName: {{ template "onos-kpimon.fullname" . }}-secret
+            secretName: {{ template "onos-hw.fullname" . }}-secret
         - name: config
           configMap:
-            name: {{ template "onos-kpimon.fullname" . }}-config
+            name: {{ template "onos-hw.fullname" . }}-config
       {{- with .Values.nodeSelector }}
       nodeSelector:
       {{- toYaml . | nindent 8 }}
