@@ -52,7 +52,7 @@ onos-hw-docker:
 	@go mod vendor
 	docker build . -f build/onos-hw/Dockerfile \
 		-t onosproject/onos-hw:${ONOS_HW_VERSION}
-	@rm -rfHWr
+	@rm -rf
 
 images: # @HELP build all Docker images
 images: build onos-hw-docker
